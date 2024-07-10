@@ -53,7 +53,12 @@ local cmd = vim.api.nvim_cmd and
   --- @param force? boolean
   --- @param mods? {[string]: any}
   function(action, buffer_number, force, mods)
-    vim.cmd[action] {bang = force, count = buffer_number, mods = mods}
+    local success, err = pcall(function()
+      vim.cmd[action] {bang = force, count = buffer_number, mods = mods}
+    end)
+    if not success then
+      print("Error executing command:", err)
+    end
   end or
   --- @param action string
   --- @param buffer_number integer
